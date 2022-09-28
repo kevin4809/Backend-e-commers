@@ -6,24 +6,39 @@ const {
   getAllProducts,
   getProductId,
   updateProducts,
+  toDisableProduct,
+  createCategory,
+  getAllCategories,
+  updateCategory,
 } = require("../controllers/products.controller");
 
 const productRouter = express.Router();
 
 //middlewares
 
-const { protectSession, protectProducts } = require("../middlewares/auth.middlewares");
+const {
+  protectSession,
+  protectProducts,
+} = require("../middlewares/auth.middlewares");
 const { productExist } = require("../middlewares/product.middleware");
 
 //Endpoints
+productRouter.get("/categories", getAllCategories);
+
 productRouter.get("/:id", getProductId);
 
 productRouter.get("/", getAllProducts);
 
 productRouter.use(protectSession);
 
+productRouter.post("/categories", createCategory);
+
+productRouter.patch("/categories/:id", updateCategory);
+
 productRouter.post("/", createProduct);
 
 productRouter.patch("/:id", productExist, protectProducts, updateProducts);
+
+productRouter.delete("/:id", productExist, protectProducts, toDisableProduct);
 
 module.exports = { productRouter };

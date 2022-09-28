@@ -70,9 +70,65 @@ const updateProducts = catchAsync(async (req, res, next) => {
   });
 });
 
+const toDisableProduct = catchAsync(async (req, res, next) => {
+  const { product } = req;
+
+  await product.update({ status: "disable" });
+
+  res.status(201).json({
+    status: "success",
+    data: { product },
+  });
+});
+
+const createCategory = catchAsync(async (req, res, next) => {
+  const { name } = req.body;
+
+  const newCategory = await Categories.create({ name });
+
+  res.status(200).json({
+    status: "success",
+    data: { newCategory },
+  });
+});
+
+const getAllCategories = catchAsync(async (req, res, next) => {
+  const allCategories = await Categories.findAll();
+
+  res.status(201).json({
+    status: "success",
+    data: { allCategories },
+  });
+});
+
+const updateCategory = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  const updateCategories = await Categories.findOne({ where: { id } });
+
+  if (!updateCategories) {
+    res.status(404).json({
+      status: "error",
+      message: "The category Id doesn't exist",
+    });
+  }
+
+  await updateCategories.update({ name });
+
+  res.status(201).json({
+    status: "success",
+    data: { updateCategories },
+  });
+});
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductId,
   updateProducts,
+  toDisableProduct,
+  createCategory,
+  getAllCategories,
+  updateCategory,
 };
