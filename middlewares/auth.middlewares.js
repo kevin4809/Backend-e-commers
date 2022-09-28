@@ -61,6 +61,19 @@ const protectUsersAccount = (req, res, next) => {
 	next();
 };
 
+const protectProducts = (req, res, next) => {
+	const { sessionUser, product } = req;
+	// const { id } = req.params;
+
+	// If the users (ids) don't match, send an error, otherwise continue
+	if (sessionUser.id !== product.id) {
+		return next(new AppError('You are not the owner of this account.', 403));
+	}
+
+	// If the ids match, grant access
+	next();
+};
+
 // Create middleware that only grants access to admin users
 const protectAdmin = (req, res, next) => {
 	const { sessionUser } = req;
@@ -76,4 +89,5 @@ module.exports = {
 	protectSession,
 	protectUsersAccount,
 	protectAdmin,
+	protectProducts,
 };
