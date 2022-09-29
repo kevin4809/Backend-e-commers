@@ -20,6 +20,8 @@ const cartExist = catchAsync(async (req, res, next) => {
       message: "created new cart",
       data: { newCart },
     });
+    req.cart = cart;
+    next();
   }
   // req.anyPropName = 'anyValue'
   req.cart = cart;
