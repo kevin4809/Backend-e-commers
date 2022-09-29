@@ -1,9 +1,11 @@
 const express = require("express");
-
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 // Routers
 const { usersRouter } = require("./routes/users.routes");
 const { productRouter } = require("./routes/products.routes");
-
+const { cartRouter } = require("./routes/cart.routes");
 // Controllers
 const { globalErrorHandler } = require("./controllers/error.controller");
 
@@ -14,9 +16,10 @@ const app = express();
 app.use(express.json());
 
 // Define endpoints
+
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/products", productRouter);
-
+app.use("/api/v1/cart", cartRouter);
 // Global error handler
 app.use(globalErrorHandler);
 
