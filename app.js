@@ -1,7 +1,5 @@
 const express = require("express");
-const helmet = require("helmet");
-const compression = require("compression");
-const morgan = require("morgan");
+
 // Routers
 const { usersRouter } = require("./routes/users.routes");
 const { productRouter } = require("./routes/products.routes");

@@ -12,7 +12,7 @@ const cartExist = catchAsync(async (req, res, next) => {
     where: { userId: sessionUser.id, status: "active" },
   });
 
-  // If cart doesn't exist, send error message
+  // If cart doesn't exist create a new cart
   if (!cart) {
     const newCart = await Carts.create({ userId: sessionUser.id });
     res.status(201).json({

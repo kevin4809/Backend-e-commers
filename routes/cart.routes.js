@@ -1,7 +1,12 @@
 const express = require("express");
 
 //Controllers
-const { addCartUser, addProduct } = require("../controllers/cart.controller");
+const {
+  addProduct,
+  updateCart,
+  deleteall,
+  getCart
+} = require("../controllers/cart.controller");
 
 //Middleware
 const { protectSession } = require("../middlewares/auth.middlewares");
@@ -12,8 +17,14 @@ const cartRouter = express.Router();
 //Endpoints
 cartRouter.use(protectSession);
 
-cartRouter.post("/", addCartUser);
+cartRouter.get("/", getCart);
 
-cartRouter.get("/", cartExist, checkProducts, checkQuantity, addProduct);
+cartRouter.post("/", cartExist, checkProducts, checkQuantity, addProduct);
+
+cartRouter.patch("/", cartExist, checkQuantity, updateCart);
+
+cartRouter.delete("/", deleteall);
+
+
 
 module.exports = { cartRouter };
