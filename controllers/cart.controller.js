@@ -21,24 +21,7 @@ const addCartUser = catchAsync(async (req, res, next) => {
 const addProduct = catchAsync(async (req, res, next) => {
   const { cart } = req;
   const { productId, quantity } = req.body;
-
-  const checkProduct = await Products.findOne({
-    where: { id: productId },
-  });
-
-  if (!checkProduct) {
-    return next(new AppError("product not found", 404));
-  }
-
-  if (checkProduct.quantity < quantity) {
-    return next(
-      new AppError(
-        "in this moment we don't have that quantity of products",
-        404
-      )
-    );
-  }
-
+  
   const newProductInCart = await ProductsInCarts.create({
     productId,
     quantity,

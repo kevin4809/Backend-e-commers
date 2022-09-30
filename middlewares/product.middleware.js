@@ -22,6 +22,7 @@ const productExist = catchAsync(async (req, res, next) => {
   next();
 });
 
+
 module.exports = {
   productExist,
 };
