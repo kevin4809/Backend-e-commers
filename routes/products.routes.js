@@ -15,12 +15,17 @@ const {
 const productRouter = express.Router();
 
 //middlewares
-
+const {
+  createProductsValidator,
+} = require("../middlewares/validators.middlewares");
 const {
   protectSession,
   protectProducts,
 } = require("../middlewares/auth.middlewares");
 const { productExist } = require("../middlewares/product.middleware");
+
+//utils
+const { upload } = require("../utils/multer.utils");
 
 //Endpoints
 productRouter.get("/categories", getAllCategories);
@@ -35,7 +40,7 @@ productRouter.post("/categories", createCategory);
 
 productRouter.patch("/categories/:id", updateCategory);
 
-productRouter.post("/", createProduct);
+productRouter.post("/", upload.single("postImg"), createProduct);
 
 productRouter.patch("/:id", productExist, protectProducts, updateProducts);
 

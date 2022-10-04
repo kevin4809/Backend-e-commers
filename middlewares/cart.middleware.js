@@ -14,18 +14,14 @@ const cartExist = catchAsync(async (req, res, next) => {
 
   // If cart doesn't exist create a new cart
   if (!cart) {
-    const newCart = await Carts.create({ userId: sessionUser.id });
-    res.status(201).json({
-      status: "success",
-      message: "created new cart",
-      data: { newCart },
-    });
+    const cart = await Carts.create({ userId: sessionUser.id });
+    req.cart = cart;
+    next();
+  } else {
     req.cart = cart;
     next();
   }
   // req.anyPropName = 'anyValue'
-  req.cart = cart;
-  next();
 });
 
 const checkQuantity = catchAsync(async (req, res, next) => {

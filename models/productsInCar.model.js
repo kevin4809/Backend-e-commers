@@ -9,7 +9,7 @@ const ProductsInCarts = db.define("productsInCarts", {
   },
   cartId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   productId: {
     type: DataTypes.INTEGER,

@@ -23,19 +23,7 @@ const checkProducts = catchAsync(async (req, res, next) => {
 
   req.productsInCart = productsInCart;
   next();
-  // productsInCart.map((product) => {
-  //   if (productId === product.productId) {
-  //     if (product.status === "active") {
-  //       return next(
-  //         new AppError("this product already exist in your cart", 404)
-  //       );
-  //     } else {
-  //       product.update({ status: "active", quantity: quantity });
-  //     }
-  //   }
-  // });
 
-  // If productsInCart doesn't exist, send error message
 });
 
 module.exports = {
