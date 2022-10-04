@@ -31,6 +31,7 @@ const addProduct = catchAsync(async (req, res, next) => {
 });
 
 const updateCart = catchAsync(async (req, res, next) => {
+
   const { sessionUser } = req;
   const { productId, quantity } = req.body;
 
@@ -72,6 +73,7 @@ const deleteProductInCart = catchAsync(async (req, res, next) => {
 });
 
 const purchaseProducts = catchAsync(async (req, res, next) => {
+  
   const { sessionUser } = req;
   let price = 0;
 

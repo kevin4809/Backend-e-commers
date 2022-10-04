@@ -44,8 +44,7 @@ const getAllProducts = catchAsync(async (req, res, next) => {
 
 const getProductId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-
-  const productId = await Products.findOne({ id });
+  const productId = await Products.findOne({ where: { id } });
 
   res.status(201).json({
     status: "success",
