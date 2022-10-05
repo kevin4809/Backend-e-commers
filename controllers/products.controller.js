@@ -4,6 +4,7 @@ const { Categories } = require("../models/categories.model");
 
 //Utils
 const { catchAsync } = require("../utils/catchAsync.util");
+const { uploadProductImg } = require("../utils/firebase.utils");
 
 const createProduct = catchAsync(async (req, res, next) => {
   const { title, price, categoryId, quantity, description } = req.body;
@@ -25,6 +26,9 @@ const createProduct = catchAsync(async (req, res, next) => {
     description,
     userId: sessionUser.id,
   });
+
+  await uploadProductImg(req.files, create.id);
+
   res.status(201).json({
     status: "success",
     data: { create },

@@ -40,7 +40,7 @@ productRouter.post("/categories", createCategory);
 
 productRouter.patch("/categories/:id", updateCategory);
 
-productRouter.post("/", upload.single("postImg"), createProduct);
+productRouter.post("/", upload.array("postImg", 5), createProduct);
 
 productRouter.patch("/:id", productExist, protectProducts, updateProducts);
 
