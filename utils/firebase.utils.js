@@ -9,11 +9,10 @@ const { ProductImgs } = require("../models/productImgs.model");
 dotenv.config({ path: "./config.env" });
 
 const firebaseConfig = {
-  apiKey: "AIzaSyClEU4qf4qjbolXncAhJZ4209AZ0ayVKu8",
-  projectId: "e-commers-back",
-  storageBucket: "e-commers-back.appspot.com",
-  messagingSenderId: "778005422249",
-  appId: "1:778005422249:web:578b9f37c49ae0139289b8"
+  apiKey: process.env.FB_APIKEY,
+  projectId: process.env.FB_PROJECTID,
+  storageBucket: process.env.FB_STORAGEBUCKET,
+  appId: process.env.FB_APPID,
 };
 
 const fireBaseApp = initializeApp(firebaseConfig);
@@ -47,4 +46,3 @@ const uploadProductImg = async (imgs, productId) => {
 };
 
 module.exports = { storage, uploadProductImg };
-

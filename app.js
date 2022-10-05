@@ -1,5 +1,7 @@
 const express = require("express");
-
+const helmet = require("helmet");
+const compression = require("compression");
+const morgan = require("morgan");
 // Routers
 const { usersRouter } = require("./routes/users.routes");
 const { productRouter } = require("./routes/products.routes");
@@ -12,6 +14,12 @@ const app = express();
 
 // Enable Express app to receive JSON data
 app.use(express.json());
+
+app.use(helmet());
+
+app.use(compression());
+
+app.use(morgan("dev"));
 
 // Define endpoints
 
