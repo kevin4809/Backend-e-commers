@@ -8,14 +8,14 @@ const { catchAsync } = require("../utils/catchAsync.util");
 const { AppError } = require("../utils/appError.util");
 
 const addProduct = catchAsync(async (req, res, next) => {
-  const { productsInCart, cart } = req;
+  const { cartProduct, cart } = req;
   const { productId, quantity } = req.body;
 
-  if (!productsInCart) {
+  if (!cartProduct) {
     const product = await ProductsInCarts.create({
       productId,
       quantity,
-      cartId: cart.userId,
+      cartId: cart.id,
     });
 
     res.status(201).json({
@@ -25,13 +25,12 @@ const addProduct = catchAsync(async (req, res, next) => {
   } else {
     res.status(201).json({
       status: "success",
-      data: { productsInCart },
+      data: { cartProduct },
     });
   }
 });
 
 const updateCart = catchAsync(async (req, res, next) => {
-
   const { sessionUser } = req;
   const { productId, quantity } = req.body;
 
@@ -52,7 +51,6 @@ const updateCart = catchAsync(async (req, res, next) => {
 });
 
 const deleteProductInCart = catchAsync(async (req, res, next) => {
-
   const { productId } = req.params;
   const { sessionUser } = req;
 
@@ -73,12 +71,19 @@ const deleteProductInCart = catchAsync(async (req, res, next) => {
 });
 
 const purchaseProducts = catchAsync(async (req, res, next) => {
-  
   const { sessionUser } = req;
   let price = 0;
 
+  const cart = await Carts.findOne({
+    where: { userId: sessionUser.id, status: "active" },
+  });
+
+  if (!cart) {
+    return next(new AppError("You don't have a shopping cart", 404));
+  }
+
   const listProducts = await ProductsInCarts.findAll({
-    where: { cartId: sessionUser.id, status: "active" },
+    where: { cartId: cart.id, status: "active" },
   });
 
   listProducts.map(async (prod) => {
@@ -100,10 +105,6 @@ const purchaseProducts = catchAsync(async (req, res, next) => {
     where: { userId: sessionUser.id, status: "active" },
   });
 
-  if (!cartUser) {
-    return next(new AppError("You don't have a shopping cart", 404));
-  }
-
   await cartUser.update({ status: "purchased" });
 
   await Orders.create({
@@ -114,11 +115,9 @@ const purchaseProducts = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: { cartUser, listProducts },
+    data: { ...cartUser.dataValues, listProducts },
   });
 });
-
-
 
 module.exports = {
   addProduct,

@@ -140,6 +140,10 @@ const getOrderById = catchAsync(async (req, res, next) => {
 
   const userOrders = await Orders.findAll({
     where: { userId: sessionUser.id, id: id },
+    include: {
+      model: Carts,
+      include: { model: ProductsInCarts },
+    },
   });
 
   if (!userOrders) {

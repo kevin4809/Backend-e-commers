@@ -25,7 +25,6 @@ const cartExist = catchAsync(async (req, res, next) => {
 });
 
 const checkQuantity = catchAsync(async (req, res, next) => {
-  
   const { productId, quantity } = req.body;
 
   const checkProduct = await Products.findOne({

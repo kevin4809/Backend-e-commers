@@ -5,25 +5,22 @@ const { catchAsync } = require("../utils/catchAsync.util");
 const { AppError } = require("../utils/appError.util");
 
 const checkProducts = catchAsync(async (req, res, next) => {
-
-  const { sessionUser } = req;
+  const { cart } = req;
   const { productId, quantity } = req.body;
 
-  const productsInCart = await ProductsInCarts.findOne({
-    where: { cartId: sessionUser.id, productId: productId },
+  const cartProduct = await ProductsInCarts.findOne({
+    where: { cartId: cart.id, productId: productId, status: "active" },
   });
-  
-  if (productsInCart) {
-    if (productsInCart.status === "active") {
+
+  if (cartProduct) {
+    if (cartProduct.status === "active") {
       return next(new AppError("this product already exist in your cart", 404));
     } else {
-      await productsInCart.update({ quantity, status: "active" });
+      await cartProduct.update({ quantity, status: "active" });
     }
   }
-
-  req.productsInCart = productsInCart;
+  req.cartProduct = cartProduct;
   next();
-
 });
 
 module.exports = {
